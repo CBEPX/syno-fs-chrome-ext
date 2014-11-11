@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Synology File Station - Options</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+  <div class="content">
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8">
+        <div class="header"><h1><img style="margin-top: -10px" src="icons/icon_48.png" alt="Synology File Station">Synology File Station - Options</h1></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#connection" role="tab" data-toggle="tab">Connection</a></li>
+          <li role="presentation"><a href="#directories" role="tab" data-toggle="tab">Directories</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-md-offset-4 col-md-4">
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="connection">
+            <form id="form-settings" class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="connection-protocol" class="col-sm-3 control-label">Protocol</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline">
+                    <input type="radio" name="protocol" id="connection-protocol-http" value="http"> HTTP
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="protocol" id="connection-protocol-https" value="https"> HTTPS
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="connection-host" class="col-sm-3 control-label">Host</label>
+                <div class="col-sm-9">
+                  <input id="connection-host" name="host" type="text" class="form-control" placeholder="Host" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="connection-port" class="col-sm-3 control-label">Port</label>
+                <div class="col-sm-9">
+                  <input id="connection-port" name="port" type="text" class="form-control" placeholder="Port" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="connection-username" class="col-sm-3 control-label">Username</label>
+                <div class="col-sm-9">
+                  <input id="connection-username" name="username" type="text" class="form-control" placeholder="Username" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="connection-password" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-9">
+                  <input id="connection-password" name="password" type="password" class="form-control" placeholder="Password" />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="pull-right">
+                  <button id="button-test" class="btn btn-default" type="button"><span class="glyphicon glyphicon-flash"></span> Test</button>
+                  <button id="button-save" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="directories">
+          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- External js -->
+<script type="text/javascript" src="js/external/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/external/underscore-min.js"></script>
+<script type="text/javascript" src="js/external/backbone-min.js"></script>
+<script type="text/javascript" src="js/external/bootstrap.min.js"></script>
+<!-- js -->
+<script type="text/javascript" src="js/settings/settings-model.js"></script>
+<script type="text/javascript" src="js/settings/settings-view.js"></script>
+<script type="text/javascript" src="js/settings/settings.js"></script>
+</body>
+</html>
