@@ -1,16 +1,6 @@
 SettingsModel = Backbone.Model.extend({
   initialize: function () {
-    var self = this;
-    this.on("change", function () {
-      console.log("Model changed: " + JSON.stringify(self.attributes));
-    });
-  },
-  defaults: {
-    protocol: "http",
-    host: "localhost",
-    port: 5000,
-    username: "admin",
-    password: ""
+    console.log("Model initialized");
   },
   saveToStorage: function () {
     var self = this;
