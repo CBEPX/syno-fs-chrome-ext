@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <title>Synology File Station - Options</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/options.css">
 </head>
 <body>
   <div class="content">
@@ -24,7 +25,8 @@
       <div class="col-md-offset-4 col-md-4">
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane active" id="connection">
-            <form id="form-settings" class="form-horizontal" role="form">
+            <div id="messages"></div>
+            <form class="form-horizontal" role="form">
               <div class="form-group">
                 <label for="connection-protocol" class="col-sm-3 control-label">Protocol</label>
                 <div class="col-sm-9">
@@ -80,9 +82,10 @@
 <script type="text/javascript" src="js/external/underscore-min.js"></script>
 <script type="text/javascript" src="js/external/backbone-min.js"></script>
 <script type="text/javascript" src="js/external/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/external/spin.min.js"></script>
 <!-- js -->
-<script type="text/javascript" src="js/settings/settings-model.js"></script>
-<script type="text/javascript" src="js/settings/settings-view.js"></script>
-<script type="text/javascript" src="js/settings/settings.js"></script>
+<script type="text/javascript" src="js/settings-model.js"></script>
+<script type="text/javascript" src="js/settings-view.js"></script>
+<script type="text/javascript" src="js/options.js"></script>
 </body>
 </html>
