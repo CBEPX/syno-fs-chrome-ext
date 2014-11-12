@@ -3,51 +3,19 @@ ext.synofs = ext.synofs || {};
 ext.synofs.view = ext.synofs.view || {};
 
 ext.synofs.view.SettingsView = Backbone.View.extend({
-  isSaved: false,
+  isSaved: true,
   initialize: function () {
     var self = this;
-    self.listenTo(this.model, "loaded", function () {
-      self.render();
-    });
-    self.listenTo(this.model, "saved", function () {
-      self.isSaved = true;
-      var btn = self.$el.find("#button-save");
-        btn.data("old", btn.clone());
-        btn.removeClass("btn-primary")
-        .addClass("btn-success")
-        .html($('<span class="glyphicon glyphicon-ok"></span>'))
-        .append(' Saved')
-        .prop("disabled", true);
-    });
-    self.listenTo(self.model, "test-start", function () {
-      var btn = self.$el.find("#button-test");
-      var span = btn.find("span");
-      span.append(new Spinner({lines: 17, length: 0, width: 2, radius: 8, corners: 0, trail: 50, speed: 2, className: "spinner"}).spin().el);
-      btn.prop("disabled", true);
-    });
-    self.listenTo(self.model, "test-done", function (data) {
-      var btn = self.$el.find("#button-test");
-      var messages = self.$el.find("#messages");
-      var alert = $('<div class="alert alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button></div>');
-      if (data.success) {
-        alert.addClass("alert-success");
-        alert.append("Connection successful!");
-        messages.html(alert);
-      }
-      else {
-        alert.addClass("alert-danger");
-        alert.append("Connection unsuccessful!");
-        messages.html(alert);
-      }
-      btn.find(".spinner").remove();
-      btn.prop("disabled", false);
-    });
+    self.listenTo(this.model, "fetched", self.render);
+    self.listenTo(this.model, "synced", self.synced);
+    self.listenTo(self.model, "test-start", self.testStart);
+    self.listenTo(self.model, "test-done", self.testDone);
   },
   events: {
     "click #button-test": "test",
     "click #button-save": "save",
     "input :input": "changed",
-    "click :radio": "changed"
+    "click input:radio": "changed"
   },
   render: function () {
     this.$el.find("#connection-protocol-" + this.model.get("protocol")).prop("checked", true);
@@ -61,16 +29,54 @@ ext.synofs.view.SettingsView = Backbone.View.extend({
     this.model.testConnection();
   },
   save: function (e) {
-    this.model.saveToStorage();
+    this.model.sync();
   },
   changed: function (e) {
-    if (this.isSaved) {
-      var btn = this.$el.find("#button-save");
-      var old = btn.data("old");
-      btn.replaceWith(old);
-    }
-    this.isSaved = false;
     var target = $(e.target);
+    if (this.isSaved && (!target.attr("type") == "radio" || target.val() != this.model.get(target.attr("name")))) {
+      var btn = this.$el.find("#button-save");
+      btn.removeClass("btn-success")
+        .addClass("btn-primary")
+        .html('<span class="glyphicon glyphicon-floppy-disk"></span>')
+        .append(" Save")
+        .prop("disabled", false);
+      this.isSaved = false;
+    }
     this.model.set(target.attr("name"), target.val());
+  },
+  synced: function () {
+    var self = this;
+    self.isSaved = true;
+    var btn = self.$el.find("#button-save");
+      btn.removeClass("btn-primary")
+      .addClass("btn-success")
+      .html($('<span class="glyphicon glyphicon-floppy-saved"></span>'))
+      .append(' Saved')
+      .prop("disabled", true);
+  },
+  testStart: function () {
+    var self = this;
+    var btn = self.$el.find("#button-test");
+    var span = btn.find("span");
+    span.append(new Spinner({lines: 17, length: 0, width: 2, radius: 9, corners: 0, trail: 50, speed: 2, className: "spinner"}).spin().el);
+    btn.prop("disabled", true);
+  },
+  testDone: function (data) {
+    var self = this;
+    var btn = self.$el.find("#button-test");
+    var messages = self.$el.find("#messages");
+    var alert = $('<div class="alert alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button></div>');
+    if (data.success) {
+      alert.addClass("alert-success");
+      alert.append("Connection successful!");
+      messages.html(alert);
+    }
+    else {
+      alert.addClass("alert-danger");
+      alert.append("Connection unsuccessful!");
+      messages.html(alert);
+    }
+    btn.find(".spinner").remove();
+    btn.prop("disabled", false);
   }
 });

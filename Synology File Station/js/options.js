@@ -4,4 +4,5 @@ $(function () {
     model: model,
     el: "#connection"
   });
+  model.fetch();
 });

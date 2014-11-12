@@ -8,28 +8,30 @@ ext.synofs.model.SettingsModel = Backbone.Model.extend({
   _sharedPath:
     "/webapi/FileStation/file_share.cgi?api=SYNO.FileStation.List&version=1&method=list_share",
   initialize: function () {
+
+  },
+  sync: function () {
     var self = this;
-    chrome.storage.sync.get(function (result) {
+    chrome.storage.sync.set({
+      protocol: self.get("protocol"),
+      host: self.get("host"),
+      port: self.get("port"),
+      username: self.get("username"),
+      password: self.get("password")
+    },
+    function () {
+      self.trigger("synced");
+    });
+  },
+  fetch: function () {
+    var self = this;
+    chrome.storage.sync.get({protocol: "http", host: "", port: 5000, username: "", password: ""}, function (result) {
       self.set("protocol", result.protocol);
       self.set("host", result.host);
       self.set("port", result.port);
       self.set("username", result.username);
       self.set("password", result.password);
-      self.trigger("loaded");
-    });
-  },
-  defaults: {
-    protocol: "http",
-    host: "",
-    port: 5000,
-    username: "",
-    password: ""
-  },
-  saveToStorage: function () {
-    var self = this;
-    chrome.storage.sync.set(this.attributes,
-    function () {
-      self.trigger("saved");
+      self.trigger("fetched");
     });
   },
   testConnection: function () {
@@ -38,7 +40,7 @@ ext.synofs.model.SettingsModel = Backbone.Model.extend({
     var url = self._getBaseURL() + self._testPath;
     $.ajax(url, {
       dataType: "json",
-      timeout: 5000
+      timeout: 20000
     })
     .done(function (data) {
       self.trigger("test-done", data);
